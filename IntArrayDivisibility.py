@@ -37,9 +37,9 @@ def divisibleIntegers(n, arr):
     if n == 4:
         divisibleByTwoAnywhere = False
         for digit in digit_list:
-            if digit % 4 == 0:
+            if digit == 4:
                 return True
-            if digit % 2 == 0
+
         pass #TODO: finish this
 
     if n == 5:
@@ -51,16 +51,20 @@ def divisibleIntegers(n, arr):
     if n == 6:
         if sum(digit_list) % 3 == 0:
             for digit in digit_list:
-                if digit % 2:
+                if digit % 2 == 0:
                     return True
         return False
 
     if n == 7:
-        pass # TODO: find heuristic for this
+        for digit in digit_list:
+            if digit == 7:
+                return True
+        pass #TODO: finish this
+
 
     if n == 8:
         for digit in digit_list:
-            if digit % 8 == 0:
+            if digit == 8:
                 return True
 
         # TODO: Add rest of heuristic / brute force
@@ -68,6 +72,32 @@ def divisibleIntegers(n, arr):
 
     if n == 9:
         return sum(digit_list) % 9 == 0
+
+# TODO: Fix this
+def generatePermutation(digit_set, currentString=""):
+    recursiveList = []
+    for digit in digit_set:
+        curr_digit_set = digit_set.copy()
+        curr_digit_set.remove(digit)
+        recursiveList.append([curr_digit_set, currentString+str(digit)])
+    print recursiveList
+    returnList = map(lambda (cset, cstring): generatePermutation(cset, cstring), recursiveList)
+    print returnList
+    returnList = reduce(lambda (l1,l2): l1 + l2, returnList)
+    if len(digit_set) == 1:
+        print returnList
+        return returnList
+
+generatePermutation(set([1,2,3]))
+
+
+
+
+
+# def bruteForceDivisibility(digit_list, arr):
+#     permutationList = []
+#     for
+
 
 print(divisibleIntegers(4, [10,20,30]))
 print(divisibleIntegers(2, [1,2,3,4,5]))
