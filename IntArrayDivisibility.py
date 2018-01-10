@@ -24,18 +24,21 @@ def genPermute(digit_counter, agg_string=""):
     # only unique permutations instead of factorial( len(digit_list) ) amount
     # of permutations
 
+    # Base Case
     if sum(digit_counter) == 0:
         return [agg_string]
 
+    # Recursive Case
     perm_list = []
+    # For each possible digit 0 <= i <= 9
     for i in range(10):
-        # print i
         if digit_counter[i] > 0:
+            # Copies counter, then adjusts it to 'use' one more of digit i
             curr_digit_counter = list(digit_counter) # deep copy
             curr_digit_counter[i] -= 1
+            # Updates curr_string to end with digit i
             curr_string = agg_string + str(i)
-            # print curr_digit_counter
-            # print "{} is the current string".format(curr_string)
+            # Recursive Call
             perm_list += genPermute(curr_digit_counter, curr_string)
 
     return perm_list
@@ -50,21 +53,19 @@ Output:
     possible    : bool     (Whether or not a solution exists)
 '''
 def bruteForce(digit_list, divisor):
+    # Counts the number of times each digit is seen in digit_list
     digit_counter = [0] * 10
     for digit in digit_list:
         digit_counter[digit] += 1
 
-    # Generates all permutations of the digit_list
+    # Generates all permutations of the digit_list using genPermute
     perm_list = genPermute(digit_counter)
     # Converts all entries in perm_list to int
     perm_list = [int(x) for x in perm_list]
-    # Gets rid of duplicate permutations (ie numbers with leading 0s)
-    perm_list = list(set(perm_list))
-    print len(perm_list)
 
+    # Checks for a valid solution
     for perm_int in perm_list:
         if perm_int % divisor == 0:
-            print perm_int
             return True
 
     return False
@@ -80,7 +81,6 @@ def divisibleIntegers(n, arr):
     arr = map(lambda x : str(x), arr) # converts the int array to a string arr
     digit_string = reduce(lambda a,b: a + b, arr)
     digit_list   = [int(x) for x in digit_string]
-    print(digit_list)
 
     # Checks through all easy measures of determining divisibility
     if n == 1:
