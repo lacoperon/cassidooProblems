@@ -12,31 +12,34 @@ from functools import reduce
 
 '''
 Function which generates all possible permutations of digits in a list
-(Certainly already written in python, but good practice to implement)
+(Certainly already written in python, but good practice to implement).
 Input:
-    digit_list  : int list (A list of digits to permute)
-    curr_string : str      (A aggregator of the permutation as it is generated)
+    digit_counter : int list (Counting the number of each digit to place)
+    agg_string         : str (Aggregates of the permutation as it is generated)
 Output:
     perm_list   : str list (a list of all string permutations of the digits)
 '''
-def genPermute(digit_list, curr_string=""):
-    if len(digit_list) == 0:
-        return [curr_string]
+def genPermute(digit_counter, agg_string=""):
+    # Given that we know that the digits are between 0 and 9 inclusive,
+    # we can count the amount we're given of each digit, so we can generate
+    # only unique permutations instead of factorial( len(digit_list) ) amount
+    # of permutations
+
+    if sum(digit_counter) == 0:
+        return [agg_string]
 
     perm_list = []
-    for index in range(len(digit_list)):
-        l_digit_list = digit_list[0:index] # the left side of the digit list
-        if index != len(digit_list):
-            r_digit_list = digit_list[index+1:len(digit_list)]
-        else:
-            r_digit_list = []
-        rem_digit_list = l_digit_list + r_digit_list # remaining unused digits
-        curr_digit = str(digit_list[index])
-        perm_list += genPermute(rem_digit_list, curr_string + curr_digit)
+    for i in range(10):
+        # print i
+        if digit_counter[i] > 0:
+            curr_digit_counter = list(digit_counter) # deep copy
+            curr_digit_counter[i] -= 1
+            curr_string = agg_string + str(i)
+            # print curr_digit_counter
+            # print "{} is the current string".format(curr_string)
+            perm_list += genPermute(curr_digit_counter, curr_string)
+
     return perm_list
-
-assert len(genPermute([1,2,3,4,5], "")) == math.factorial(5)
-
 
 '''
 Function which brute forces whether or not a permutation of digits exists that
@@ -48,15 +51,21 @@ Output:
     possible    : bool     (Whether or not a solution exists)
 '''
 def bruteForce(digit_list, divisor):
+    digit_counter = [0] * 10
+    for digit in digit_list:
+        digit_counter[digit] += 1
+
     # Generates all permutations of the digit_list
-    perm_list = genPermute(digit_list)
+    perm_list = genPermute(digit_counter)
     # Converts all entries in perm_list to int
     perm_list = [int(x) for x in perm_list]
     # Gets rid of duplicate permutations (ie numbers with leading 0s)
     perm_list = list(set(perm_list))
+    print len(perm_list)
 
     for perm_int in perm_list:
         if perm_int % divisor == 0:
+            print perm_int
             return True
 
     return False
@@ -144,5 +153,6 @@ def divisibleIntegers(n, arr):
     # Otherwise, we need to brute force the solution
     return bruteForce(digit_list, n)
 
-assert divisibleIntegers([20,40,60], 2) == True
-assert divisibleIntegers([20,40,60], 3) == True
+assert (divisibleIntegers(2,[20,40,60]) == True)
+assert (divisibleIntegers(3,[20,40,60]) == True)
+assert (divisibleIntegers(7,[20,40,60]) == True)
