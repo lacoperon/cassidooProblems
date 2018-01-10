@@ -1,5 +1,3 @@
-import math
-
 '''
 8th January, 2017
 Prompt: Given an array of integers, find whether it's possible to construct an
@@ -11,8 +9,9 @@ return false.
 from functools import reduce
 
 '''
-Function which generates all possible permutations of digits in a list
-(Certainly already written in python, but good practice to implement).
+Function which generates all possible permutations of digits in a list,
+in the most efficient way possible ( O(2^n) instead of O(n!) )
+
 Input:
     digit_counter : int list (Counting the number of each digit to place)
     agg_string         : str (Aggregates of the permutation as it is generated)
