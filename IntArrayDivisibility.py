@@ -1,3 +1,5 @@
+import math
+
 '''
 8th January, 2017
 Prompt: Given an array of integers, find whether it's possible to construct an
@@ -63,41 +65,45 @@ def divisibleIntegers(n, arr):
 
 
     if n == 8:
+        # Seeing if there's a good shortcut to determine divisibility by 8
+        # (or an easy way to rule out divisibility)
+
+        # If we construct a num ending in 8, it is divisible by 8
+        # If a num doesn't contain an even digit, it can't be divisible by 8
+        seenEven = False
         for digit in digit_list:
             if digit == 8:
                 return True
+            if digit % 2 == 0:
+                seenEven = True
 
-        # TODO: Add rest of heuristic / brute force
+        if not seenEven:
+            return False
+
+        # Otherwise, we need to brute force a solution
+        pass #TODO: implement this
 
 
     if n == 9:
         return sum(digit_list) % 9 == 0
 
-# TODO: Fix this
-def generatePermutation(digit_set, currentString=""):
-    recursiveList = []
-    for digit in digit_set:
-        curr_digit_set = digit_set.copy()
-        curr_digit_set.remove(digit)
-        recursiveList.append([curr_digit_set, currentString+str(digit)])
-    print recursiveList
-    returnList = map(lambda (cset, cstring): generatePermutation(cset, cstring), recursiveList)
-    print returnList
-    returnList = reduce(lambda (l1,l2): l1 + l2, returnList)
-    if len(digit_set) == 1:
-        print returnList
-        return returnList
+def genPermute(digit_list, curr_string=""):
+    if len(digit_list) == 0:
+        return [curr_string]
 
-generatePermutation(set([1,2,3]))
+    perm_list = []
+    for index in range(len(digit_list)):
+        l_digit_list = digit_list[0:index] # the left side of the digit list
+        if index != len(digit_list):
+            r_digit_list = digit_list[index+1:len(digit_list)]
+        else:
+            r_digit_list = []
+        rem_digit_list = l_digit_list + r_digit_list # remaining unused digits
+        curr_digit = str(digit_list[index])
+        perm_list += genPermute(rem_digit_list, curr_string + curr_digit)
+    return perm_list
 
+assert len(genPermute([1,2,3,4,5,6,7,8,9,0], "")) == math.factorial(10)
 
-
-
-
-# def bruteForceDivisibility(digit_list, arr):
-#     permutationList = []
-#     for
-
-
-print(divisibleIntegers(4, [10,20,30]))
-print(divisibleIntegers(2, [1,2,3,4,5]))
+# print(divisibleIntegers(4, [10,20,30]))
+# print(divisibleIntegers(2, [1,2,3,4,5]))
