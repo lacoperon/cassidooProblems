@@ -1,6 +1,6 @@
-# @cassidoo Mailing List Practice Problems
+# @[cassidoo](https://www.github.com/cassidoo "cassidoo's GitHub Page") Mailing List Practice Problems
 
-This repo documents @lacoperon's impmlementation of @cassidoo's miscellaneous
+This repo documents @[lacoperon](https://www.github.com/lacoperon)'s implementation of @[cassidoo](https://www.github.com/cassidoo)'s miscellaneous
 coding problems they share via their mailing list.
 
 Problems Include:
